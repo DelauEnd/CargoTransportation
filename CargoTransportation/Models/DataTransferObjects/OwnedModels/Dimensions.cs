@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace RequestHandler
+namespace CargoTransportation
 {
     public class Dimensions
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RequestHandler.ObjectsForUpdate
+namespace CargoTransportation.ObjectsForUpdate
 {
     public class OrderForUpdateDto
     {

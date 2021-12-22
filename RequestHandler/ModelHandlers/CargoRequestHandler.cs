@@ -7,17 +7,17 @@ namespace RequestHandler.ModelHandlers
     {
         private readonly string controllerUrl = "/Cargoes";
 
-        public CargoRequestHandler(HttpClient client, string baseUrl) : base(client, baseUrl)
+        public CargoRequestHandler(HttpClient client) : base(client)
         {
         }
 
         public async Task<HttpResponseMessage> GetAllCargoes()
-            => await Client.GetAsync(BaseUrl + controllerUrl);
+            => await Client.GetAsync(controllerUrl);
 
         public async Task<HttpResponseMessage> GetAllCargoById(int cargoId)
-            => await Client.GetAsync(BaseUrl + controllerUrl + $"/{cargoId}");
+            => await Client.GetAsync(controllerUrl + $"/{cargoId}");
 
         public async Task<HttpResponseMessage> DeleteCargoById(int cargoId)
-            => await Client.DeleteAsync(BaseUrl + controllerUrl + $"/{cargoId}");
+            => await Client.DeleteAsync(controllerUrl + $"/{cargoId}");
     }
 }

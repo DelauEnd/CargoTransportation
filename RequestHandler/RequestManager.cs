@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RequestHandler.ModelHandlers;
+using System;
 using System.Net.Http;
 
 namespace RequestHandler
@@ -14,10 +15,13 @@ namespace RequestHandler
         public RequestManager(IConfiguration configuration)
         {
             this.configuration = configuration;
-            Client = new HttpClient();
+            Client = new HttpClient()
+            {
+                BaseAddress = new Uri(BaseUrl)
+            };
         }
 
         private CargoRequestHandler cargoRequestHandler;
-        public CargoRequestHandler CargoRequestHandler => cargoRequestHandler ??= cargoRequestHandler = new CargoRequestHandler(Client, BaseUrl);
+        public CargoRequestHandler CargoRequestHandler => cargoRequestHandler ??= cargoRequestHandler = new CargoRequestHandler(Client);
     }
 }

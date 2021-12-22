@@ -1,4 +1,4 @@
-﻿namespace RequestHandler
+﻿namespace CargoTransportation
 {
     public enum Status
     {

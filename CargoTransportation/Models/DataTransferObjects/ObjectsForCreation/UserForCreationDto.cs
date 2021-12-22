@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RequestHandler
+namespace CargoTransportation
 {
     public class UserForCreationDto
     {

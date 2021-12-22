@@ -1,5 +1,5 @@
 ﻿using System;
-namespace RequestHandler
+namespace CargoTransportation
 {
     public class CargoDto
     {

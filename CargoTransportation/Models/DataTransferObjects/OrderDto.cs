@@ -1,4 +1,4 @@
-﻿namespace RequestHandler
+﻿namespace CargoTransportation
 {
     public class OrderDto
     {

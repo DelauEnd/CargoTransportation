@@ -1,4 +1,4 @@
-﻿namespace RequestHandler.ObjectsForUpdate
+﻿namespace CargoTransportation.ObjectsForUpdate
 {
     public class RouteForUpdateDto
     {
