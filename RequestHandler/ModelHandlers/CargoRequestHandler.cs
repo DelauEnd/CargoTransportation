@@ -1,23 +1,24 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace RequestHandler.ModelHandlers
 {
     public class CargoRequestHandler : RequestHandlerBase
     {
-        private readonly string controllerUrl = "/Cargoes";
+        private readonly string controllerUrl = "/api/Cargoes";
 
-        public CargoRequestHandler(HttpClient client) : base(client)
+        public CargoRequestHandler(IHttpClientService client) : base(client)
         {
         }
 
         public async Task<HttpResponseMessage> GetAllCargoes()
-            => await Client.GetAsync(controllerUrl);
+            => await HttpClient.Client.GetAsync(controllerUrl);
 
         public async Task<HttpResponseMessage> GetAllCargoById(int cargoId)
-            => await Client.GetAsync(controllerUrl + $"/{cargoId}");
+            => await HttpClient.Client.GetAsync(HttpClient.Client.BaseAddress + controllerUrl + $"/{cargoId}");
 
         public async Task<HttpResponseMessage> DeleteCargoById(int cargoId)
-            => await Client.DeleteAsync(controllerUrl + $"/{cargoId}");
+            => await HttpClient.Client.DeleteAsync(HttpClient.Client.BaseAddress + $"/{cargoId}");
     }
 }

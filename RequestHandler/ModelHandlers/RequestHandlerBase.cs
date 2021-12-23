@@ -1,14 +1,17 @@
-﻿using System.Net.Http;
+﻿using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace RequestHandler.ModelHandlers
 {
     public class RequestHandlerBase
     {
-        protected HttpClient Client { get; set; }
+        protected IHttpClientService HttpClient { get; set; }
 
-        public RequestHandlerBase(HttpClient client)
+        public RequestHandlerBase(IHttpClientService client)
         {
-            this.Client = client;
+            this.HttpClient = client;
         }
     }
 }

@@ -20,6 +20,8 @@ namespace CargoTransportation
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.ConfigureHttpClientServiceManager();
             services.ConfigureRequestManager();
         }
 
