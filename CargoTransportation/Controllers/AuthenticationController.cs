@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CargoTransportation.Controllers
 {
@@ -49,7 +45,7 @@ namespace CargoTransportation.Controllers
             }
         }
 
-             
+
 
         // GET: Authentication/Registration
         public ActionResult Registration()

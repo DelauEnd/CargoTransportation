@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@functions{
+    void RemoveToken()
+        => request.RemoveToken();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,6 +31,12 @@
                         </li>
                     </ul>
                 </div>
+                @if (request.HttpClient.Authenticated)
+                {
+                    <div align="right" class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <input type="button" value="Logout" onclick="@("window.location.href='" + @Url.Action("Logout", "Actions") + "'");" />
+                    </div>
+                }
             </div>
         </nav>
     </header>

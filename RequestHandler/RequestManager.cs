@@ -1,14 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RequestHandler.ModelHandlers;
 using System;
-using System.Net;
-using System.Net.Http;
 
 namespace RequestHandler
 {
     public class RequestManager : IRequestManager
     {
-        private IHttpClientService HttpClient { get; set; }
+        public IHttpClientService HttpClient { get; private set; }
         private readonly IConfiguration configuration;
         private string BaseUrl
             => configuration.GetSection("ApiBaseUrl").Value;
@@ -18,6 +16,15 @@ namespace RequestHandler
             this.configuration = configuration;
             HttpClient = client;
             HttpClient.Client.BaseAddress = new Uri(BaseUrl);
+        }
+
+        public void SetUnauthenticated()        
+            => HttpClient.Authenticated = false;      
+
+        public void RemoveToken()
+        {
+            SetUnauthenticated();
+            HttpClient.Client.DefaultRequestHeaders.Authorization = null;
         }
 
         private CargoRequestHandler cargoRequestHandler;

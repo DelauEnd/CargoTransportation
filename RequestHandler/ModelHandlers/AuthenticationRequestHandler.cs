@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RequestHandler.ModelHandlers
@@ -23,6 +19,9 @@ namespace RequestHandler.ModelHandlers
             => await HttpClient.Client.PostAsync(controllerUrl + "/login", content);
 
         public void AddJwtTokenToHeader(string token)
-            => HttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        {
+            HttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            HttpClient.Authenticated = true;
+        }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Text;
 
 namespace RequestHandler
 {
@@ -11,6 +8,7 @@ namespace RequestHandler
         public HttpClient Client { get; set; }
         public HttpClientHandler Handler { get; set; }
         public CookieContainer CookieContainer { get; set; }
+        public bool Authenticated { get; set; }
 
         public HttpClientService()
         {
@@ -19,6 +17,8 @@ namespace RequestHandler
                 CookieContainer = new CookieContainer()
             };
             Client = new HttpClient(Handler);
+
+            Authenticated = false;
         }
     }
 }

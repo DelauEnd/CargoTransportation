@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using CargoTransportation.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CargoTransportation.Controllers
 {
@@ -18,11 +15,7 @@ namespace CargoTransportation.Controllers
             IEnumerable<CargoDto> cargoes;
 
             if (!response.IsSuccessStatusCode)
-                return new ObjectResult(new StatusCodeResponse()
-                {
-                    StatusCode = ((int)response.StatusCode).ToString(),
-                    Response = response.ReasonPhrase
-                });
+                return UnsuccesfullStatusCode(response);
 
             cargoes = JsonSerializer.Deserialize<IEnumerable<CargoDto>>(await response.Content.ReadAsStringAsync());
             return View(cargoes);
