@@ -14,10 +14,13 @@ namespace RequestHandler.ModelHandlers
         public async Task<HttpResponseMessage> GetAllCargoes()
             => await HttpClient.Client.GetAsync(controllerUrl);
 
-        public async Task<HttpResponseMessage> GetAllCargoById(int cargoId)
-            => await HttpClient.Client.GetAsync(HttpClient.Client.BaseAddress + controllerUrl + $"/{cargoId}");
+        public async Task<HttpResponseMessage> GetCargoById(int cargoId)
+            => await HttpClient.Client.GetAsync(controllerUrl + $"/{cargoId}");
 
         public async Task<HttpResponseMessage> DeleteCargoById(int cargoId)
-            => await HttpClient.Client.DeleteAsync(HttpClient.Client.BaseAddress + $"/{cargoId}");
+            => await HttpClient.Client.DeleteAsync(controllerUrl + $"/{cargoId}");
+
+        public async Task<HttpResponseMessage> PatchCargoById(int cargoId, HttpContent content)
+            => await HttpClient.Client.PatchAsync(controllerUrl + $"/{cargoId}", content);
     }
 }

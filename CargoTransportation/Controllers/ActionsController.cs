@@ -8,6 +8,7 @@ namespace CargoTransportation.Controllers
 {
     public class ActionsController : ExtendedControllerBase
     {
+        [HttpGet]
         public IActionResult Logout()
         {
             request.RemoveToken();

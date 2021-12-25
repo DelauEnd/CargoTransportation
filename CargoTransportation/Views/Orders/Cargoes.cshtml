@@ -1,11 +1,14 @@
 ﻿@model IEnumerable<CargoTransportation.CargoDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Cargoes";
 }
 
-<h1>Index</h1>
+<h1>Cargoes</h1>
 
+<p>
+    @Html.ActionLink("Add", "CreateCargo", "Cargoes", new { id = (int)ViewBag.OrderToEdit })
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -31,8 +34,7 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) 
-    {
+@foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
@@ -53,11 +55,11 @@
                 @Html.DisplayFor(modelItem => item.Weight)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { item.Id }) |
-                @Html.ActionLink("Details", "Details", new { item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { item.Id })
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
-    }
+}
     </tbody>
 </table>

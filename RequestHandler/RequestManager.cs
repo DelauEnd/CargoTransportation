@@ -32,5 +32,20 @@ namespace RequestHandler
 
         private AuthenticationRequestHandler authenticationRequestHandler;
         public AuthenticationRequestHandler AuthenticationRequestHandler => authenticationRequestHandler ??= authenticationRequestHandler = new AuthenticationRequestHandler(HttpClient);
+
+        public CargoCategoriesRequestHandler cargoCategoriesRequestHandler;
+        public CargoCategoriesRequestHandler CargoCategoriesRequestHandler => cargoCategoriesRequestHandler ??= cargoCategoriesRequestHandler = new CargoCategoriesRequestHandler(HttpClient);
+
+        public CustomerRequestHandler customerRequestHandler;
+        public CustomerRequestHandler CustomerRequestHandler => customerRequestHandler ??= customerRequestHandler = new CustomerRequestHandler(HttpClient);
+
+        public OrderRequestHandler orderRequestHandler;
+        public OrderRequestHandler OrderRequestHandler => orderRequestHandler ??= orderRequestHandler = new OrderRequestHandler(HttpClient);
+
+        public RouteRequestHandler routeRequestHandler;
+        public RouteRequestHandler RouteRequestHandler => routeRequestHandler ??= routeRequestHandler = new RouteRequestHandler(HttpClient);
+
+        public TransportRequestHandler transportRequestHandler;
+        public TransportRequestHandler TransportRequestHandler => transportRequestHandler ??= transportRequestHandler = new TransportRequestHandler(HttpClient);
     }
 }

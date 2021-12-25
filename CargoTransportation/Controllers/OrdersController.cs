@@ -1,48 +1,62 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace CargoTransportation.Controllers
 {
-    public class CargoesController : ExtendedControllerBase
+    public class OrdersController : ExtendedControllerBase
     {
-        // GET: Cargoes
+        // GET: Orders
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var response = await request.CargoRequestHandler.GetAllCargoes();
+            var response = await request.OrderRequestHandler.GetAllOrders();
+            IEnumerable<OrderDto> orders;
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            orders = JsonConvert.DeserializeObject<IEnumerable<OrderDto>>(await response.Content.ReadAsStringAsync());
+            return View(orders);
+        }
+
+        [HttpGet]
+        [Route("Orders/{id}/Cargoes")]
+        public async Task<ActionResult> Cargoes(int id)
+        {
+            var response = await request.OrderRequestHandler.GetCargoesForOrder(id);
             IEnumerable<CargoDto> cargoes;
 
             if (!response.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(response);
 
-            cargoes = JsonSerializer.Deserialize<IEnumerable<CargoDto>>(await response.Content.ReadAsStringAsync());
+            ViewBag.OrderToEdit = id;
+
+            cargoes = JsonConvert.DeserializeObject<IEnumerable<CargoDto>>(await response.Content.ReadAsStringAsync());
+
             return View(cargoes);
         }
 
-        // GET: Cargoes/Details/5
+        // GET: Orders/Create
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Create()
         {
             return View();
         }
 
-        [HttpGet]
-        [Route("Orders/{id}/CreateCargo")]
-        public ActionResult CreateCargo(int id)
-        {
-            return View();
-        }
-
+        // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Orders/{id}/CreateCargo")]
-        public ActionResult CreateCargo(CargoForCreationDto cargo, int id)
+        public ActionResult Create(IFormCollection collection)
         {
             try
             {
+                // TODO: Add insert logic here
 
                 return RedirectToAction(nameof(Index));
             }
@@ -52,14 +66,14 @@ namespace CargoTransportation.Controllers
             }
         }
 
-        // GET: Cargoes/Edit/5
+        // GET: Orders/Edit/5
         [HttpGet]
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Cargoes/Edit/5
+        // POST: Orders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -76,14 +90,14 @@ namespace CargoTransportation.Controllers
             }
         }
 
-        // GET: Cargo/Delete/5
+        // GET: Orders/Delete/5
         [HttpGet]
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Cargo/Delete/5
+        // POST: Orders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
