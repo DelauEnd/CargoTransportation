@@ -4,8 +4,9 @@
     ViewData["Title"] = "CreateCargo";
 }
 
-<h1>CreateCargo</h1>
+@section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
 
+<h1>CreateCargo</h1>
 <h4>CargoForCreationDto</h4>
 <hr />
 <div class="row">

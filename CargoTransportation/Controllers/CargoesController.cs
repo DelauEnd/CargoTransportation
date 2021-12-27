@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CargoTransportation.Controllers
@@ -13,20 +13,27 @@ namespace CargoTransportation.Controllers
         public async Task<ActionResult> Index()
         {
             var response = await request.CargoRequestHandler.GetAllCargoes();
-            IEnumerable<CargoDto> cargoes;
 
             if (!response.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(response);
 
-            cargoes = JsonSerializer.Deserialize<IEnumerable<CargoDto>>(await response.Content.ReadAsStringAsync());
+            var cargoes = JsonConvert.DeserializeObject<IEnumerable<CargoDto>>(await response.Content.ReadAsStringAsync());
             return View(cargoes);
         }
 
-        // GET: Cargoes/Details/5
+        
         [HttpGet]
-        public ActionResult Details(int id)
+        [Route("Cargoes/{id}/Details")]
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var response = await request.CargoRequestHandler.GetCargoById(id);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            var cargo = JsonConvert.DeserializeObject<CargoDto>(await response.Content.ReadAsStringAsync());
+
+            return View(cargo.Dimensions);
         }
 
         [HttpGet]

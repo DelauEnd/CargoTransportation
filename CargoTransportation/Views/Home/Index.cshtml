@@ -4,7 +4,7 @@
 
     <div class="text-center">
         <h1 class="display-4">Welcome</h1>
-        @{ 
+        @{
             if (!request.HttpClient.Authenticated)
             {
                 <p><input style="width:200px" type="button" value="Вход" onclick="@("window.location.href='" + @Url.Action("login", "authentication") + "'");" /></p>
@@ -12,7 +12,7 @@
             }
             else
             {
-
+                @section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
             }
         }
     </div>

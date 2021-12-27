@@ -40,10 +40,15 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+
+    <div role="main" class="container-fluid mh-100">   
+        <div>
+            @RenderSection("LeftMenu", required: false)
+        </div>
+        <div class="container-fluid">
             @RenderBody()
-        </main>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
