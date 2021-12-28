@@ -37,16 +37,16 @@ namespace CargoTransportation.Controllers
         }
 
         [HttpGet]
-        [Route("Orders/{id}/CreateCargo")]
-        public ActionResult CreateCargo(int id)
+        [Route("Orders/{orderId}/CreateCargo")]
+        public ActionResult CreateCargo(int orderId)
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Orders/{id}/CreateCargo")]
-        public ActionResult CreateCargo(CargoForCreationDto cargo, int id)
+        [Route("Orders/{orderId}/CreateCargo")]
+        public ActionResult CreateCargo(CargoForCreationDto cargo, int orderId)
         {
             try
             {
@@ -83,28 +83,16 @@ namespace CargoTransportation.Controllers
             }
         }
 
-        // GET: Cargo/Delete/5
         [HttpGet]
-        public ActionResult Delete(int id)
+        [Route("Cargoes/{id}/Delete")]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
-        }
+            var response = await request.CargoRequestHandler.DeleteCargoById(id);
 
-        // POST: Cargo/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }

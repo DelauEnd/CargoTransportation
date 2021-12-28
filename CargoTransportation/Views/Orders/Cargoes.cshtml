@@ -3,9 +3,10 @@
 @{
     ViewData["Title"] = "Cargoes";
 }
+@section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
 
 <h1>Cargoes</h1>
-@{await Html.RenderPartialAsync("RedirectPanel"); }
+    <a asp-action="Create">Create New</a>
 <table class="table">
     <thead>
         <tr>

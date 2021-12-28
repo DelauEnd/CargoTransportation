@@ -7,8 +7,8 @@
         @{
             if (!request.HttpClient.Authenticated)
             {
-                <p><input style="width:200px" type="button" value="Вход" onclick="@("window.location.href='" + @Url.Action("login", "authentication") + "'");" /></p>
-                <p><input style="width:200px" type="button" value="Регистрация" onclick="@("window.location.href='" + @Url.Action("registration", "authentication") + "'");" /></p>
+                <p><input style="width:200px" type="button" value="Login" onclick="@("window.location.href='" + @Url.Action("login", "authentication") + "'");" /></p>
+                <p><input style="width:200px" type="button" value="Register" onclick="@("window.location.href='" + @Url.Action("registration", "authentication") + "'");" /></p>
             }
             else
             {

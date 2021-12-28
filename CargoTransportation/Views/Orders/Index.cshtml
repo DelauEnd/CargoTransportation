@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Index";
 }
+@section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
+
 
 <h1>Index</h1>
 <p>
