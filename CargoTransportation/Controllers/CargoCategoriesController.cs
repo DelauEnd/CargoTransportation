@@ -14,7 +14,7 @@ namespace CargoTransportation.Controllers
     [Route("Cargoes/Categories")]
     public class CargoCategoriesController : ExtendedControllerBase
     {
-        CargoCategoryForUpdateDto CategoryForUpdate { get; set; }
+        static CargoCategoryForUpdateDto CategoryForUpdate { get; set; }
 
         [HttpGet]
         public async Task <ActionResult> Index()
@@ -52,26 +52,14 @@ namespace CargoTransportation.Controllers
         // GET: CargoCategories/Delete/5
         [HttpGet]
         [Route("{id}/Delete")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
-        }
+            var response = await request.CargoRequestHandler.DeleteCargoById(id);
 
-        [HttpPost]
-        [Route("{id}/Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -97,13 +85,15 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("{id}/Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, CargoCategoryForUpdateDto category)
+        public async Task<ActionResult> Edit(int id, CargoCategoryForUpdateDto category)
         {
-            var categoryDiff = JsonPatcher.CreatePatch(CategoryForUpdate, category);
+            HttpContent content = BuildHttpContent(category);
+            var response = await request.CargoCategoriesRequestHandler.PutCategoryById(id, content);
 
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
 
-
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
