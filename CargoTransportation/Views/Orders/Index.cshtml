@@ -44,9 +44,9 @@
                     @Html.DisplayFor(modelItem => item.Destination)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id}) |
                     @Html.ActionLink("Details", "Cargoes", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <a href="#" onclick="SubmitRedirect('Orders', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
                 </td>
             </tr>
         }

@@ -6,7 +6,7 @@
 @section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
 
 <h1>Cargoes</h1>
-    <a asp-action="Create">Create New</a>
+    @Html.ActionLink("Add", "CreateCargo", "Cargoes" , new { orderId = ViewBag.OrderToEdit })
 <table class="table">
     <thead>
         <tr>
@@ -54,9 +54,9 @@
                     @Html.DisplayFor(modelItem => item.Weight)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", "Cargoes", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Edit", "Edit", "Cargoes", new { id = item.Id }) |
+                    @Html.ActionLink("Dimensions", "Details", "Cargoes", new { id = item.Id }) |
+                    <a href="#" onclick="SubmitRedirect('Cargoes', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
                 </td>
             </tr>
         }

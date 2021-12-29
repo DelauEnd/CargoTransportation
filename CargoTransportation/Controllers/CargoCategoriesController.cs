@@ -14,7 +14,7 @@ namespace CargoTransportation.Controllers
     [Route("Cargoes/Categories")]
     public class CargoCategoriesController : ExtendedControllerBase
     {
-        static CargoCategoryForUpdateDto CategoryForUpdate { get; set; }
+        static CargoCategoryForUpdateDto CategoryToUpdate { get; set; }
 
         [HttpGet]
         public async Task <ActionResult> Index()
@@ -49,7 +49,6 @@ namespace CargoTransportation.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: CargoCategories/Delete/5
         [HttpGet]
         [Route("{id}/Delete")]
         public async Task<ActionResult> Delete(int id)
@@ -74,12 +73,12 @@ namespace CargoTransportation.Controllers
             var categories = JsonConvert.DeserializeObject<IEnumerable<CargoCategoryDto>>(await response.Content.ReadAsStringAsync());
             var category = categories.Where(categ => categ.Id == id).FirstOrDefault();
 
-            CategoryForUpdate = new CargoCategoryForUpdateDto
+            CategoryToUpdate = new CargoCategoryForUpdateDto
             {
                 Title = category.Title
             };
 
-            return View(CategoryForUpdate);
+            return View(CategoryToUpdate);
         }
 
         [HttpPost]

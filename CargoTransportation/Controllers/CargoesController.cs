@@ -1,14 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CargoTransportation.ObjectsForUpdate;
+using CargoTransportation.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CargoTransportation.Controllers
 {
     public class CargoesController : ExtendedControllerBase
     {
-        // GET: Cargoes
+        static CargoForUpdateDto CargoToUpdate { get; set; }
+
         [HttpGet]
         public async Task<ActionResult> Index()
         {
@@ -38,49 +43,80 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("Orders/{orderId}/CreateCargo")]
-        public ActionResult CreateCargo(int orderId)
+        public async Task<ActionResult> CreateCargo(int orderId)
         {
+            var categoriesResponse = await request.CargoCategoriesRequestHandler.GetAllCategories();
+
+            if (!categoriesResponse.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(categoriesResponse);
+
+            var categories = JsonConvert.DeserializeObject<IEnumerable<CargoCategoryDto>>(await categoriesResponse.Content.ReadAsStringAsync());
+
+            ViewBag.categories = categories;
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Orders/{orderId}/CreateCargo")]
-        public ActionResult CreateCargo(CargoForCreationDto cargo, int orderId)
+        public async Task<ActionResult> CreateCargo(CargoForCreationDto cargo, int orderId)
         {
-            try
-            {
+            var cargoToAdd = new List<CargoForCreationDto>() { cargo };
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            HttpContent content = BuildHttpContent(cargoToAdd);
+            var response = await request.OrderRequestHandler.CreateCargoForOrder(orderId, content);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Cargoes/Edit/5
         [HttpGet]
-        public ActionResult Edit(int id)
+        [Route("Cargoes/{id}/Edit")]
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var response = await request.CargoRequestHandler.GetCargoById(id);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            var cargo = JsonConvert.DeserializeObject<CargoDto>(await response.Content.ReadAsStringAsync());
+
+            var categoriesResponse = await request.CargoCategoriesRequestHandler.GetAllCategories();
+            var categories = JsonConvert.DeserializeObject<IEnumerable<CargoCategoryDto>>(await categoriesResponse.Content.ReadAsStringAsync());
+
+            ViewBag.categories = categories;
+
+
+            CargoToUpdate = new CargoForUpdateDto
+            {
+                Title = cargo.Title,
+                ArrivalDate = cargo.ArrivalDate,
+                DepartureDate = cargo.DepartureDate,
+                CategoryId = categories.Where(categ => categ.Title == cargo.Category).FirstOrDefault().Id,
+                Weight = cargo.Weight,
+                Dimensions = cargo.Dimensions,                
+            };
+
+            return View(CargoToUpdate);
         }
 
-        // POST: Cargoes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [Route("Cargoes/{id}/Edit")]
+        public async Task<ActionResult> Edit(int id, CargoForUpdateDto cargo)
         {
-            try
-            {
-                // TODO: Add update logic here
+            var jsonPatch = JsonPatcher.CreatePatch(CargoToUpdate, cargo);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            HttpContent content = BuildHttpContent(jsonPatch);
+            var response = await request.CargoRequestHandler.PatchCargoById(id, content);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

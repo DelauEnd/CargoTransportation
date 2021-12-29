@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CargoTransportation.ObjectsForUpdate;
+using CargoTransportation.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CargoTransportation.Controllers
 {
+    [Route("Orders")]
     public class OrdersController : ExtendedControllerBase
     {
-        // GET: Orders
+        static OrderForUpdateDto OrderToUpdate { get; set; }
+
         [HttpGet]
         public async Task<ActionResult> Index()
         {
@@ -26,7 +31,7 @@ namespace CargoTransportation.Controllers
         }
 
         [HttpGet]
-        [Route("Orders/{id}/Cargoes")]
+        [Route("{id}/Cargoes")]
         public async Task<ActionResult> Cargoes(int id)
         {
             var response = await request.OrderRequestHandler.GetCargoesForOrder(id);
@@ -42,76 +47,88 @@ namespace CargoTransportation.Controllers
             return View(cargoes);
         }
 
-        // GET: Orders/Create
         [HttpGet]
-        public ActionResult Create()
+        [Route("Create")]
+        public async Task<ActionResult> Create()
         {
+            var customersResponse = await request.CustomerRequestHandler.GetAllCustomers();
+
+            if (!customersResponse.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(customersResponse);
+
+            var customers = JsonConvert.DeserializeObject<IEnumerable<CustomerDto>>(await customersResponse.Content.ReadAsStringAsync());
+
+            ViewBag.customers = customers;
+
             return View();
         }
 
-        // POST: Orders/Create
         [HttpPost]
+        [Route("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(OrderForCreationDto order)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            HttpContent content = BuildHttpContent(order);
+            var response = await request.OrderRequestHandler.CreateOrder(content);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Orders/Edit/5
         [HttpGet]
-        public ActionResult Edit(int id)
+        [Route("{id}/Edit")]
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var response = await request.OrderRequestHandler.GetOrderById(id);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            var order = JsonConvert.DeserializeObject<OrderDto>(await response.Content.ReadAsStringAsync());
+
+            var customersResponse = await request.CustomerRequestHandler.GetAllCustomers();
+            var customers = JsonConvert.DeserializeObject<IEnumerable<CustomerDto>>(await customersResponse.Content.ReadAsStringAsync());
+
+            ViewBag.customers = customers;
+ 
+            OrderToUpdate = new OrderForUpdateDto
+            {
+                Status = order.Status,
+                DestinationId = customers.Where(customer => customer.Address == order.Destination).FirstOrDefault().Id,
+                SenderId = customers.Where(customer => customer.Address == order.Sender).FirstOrDefault().Id
+            };
+
+            return View(OrderToUpdate);
         }
 
-        // POST: Orders/Edit/5
         [HttpPost]
+        [Route("{id}/Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, OrderForUpdateDto order)
         {
-            try
-            {
-                // TODO: Add update logic here
+            var jsonPatch = JsonPatcher.CreatePatch(OrderToUpdate, order);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            HttpContent content = BuildHttpContent(jsonPatch);
+            var response = await request.OrderRequestHandler.PatchOrderById(id, content);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Orders/Delete/5
         [HttpGet]
-        public ActionResult Delete(int id)
+        [Route("{id}/Delete")]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
-        }
+            var response = await request.OrderRequestHandler.DeleteOrderById(id);
 
-        // POST: Orders/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }
