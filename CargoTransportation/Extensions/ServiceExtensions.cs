@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CargoTransportation.ActionFilters;
+using Microsoft.Extensions.DependencyInjection;
 using RequestHandler;
 
 namespace CargoTransportation.Extensions
@@ -10,5 +11,10 @@ namespace CargoTransportation.Extensions
 
         public static void ConfigureHttpClientServiceManager(this IServiceCollection services)
             => services.AddSingleton<IHttpClientService, HttpClientService>();
+
+        public static void ConfigureActionAttributes(this IServiceCollection services)
+        {
+            services.AddSingleton<AuthenticatedAttribute>();
+        }
     }
 }

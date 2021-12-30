@@ -1,4 +1,5 @@
-﻿using CargoTransportation.Models;
+﻿using CargoTransportation.ActionFilters;
+using CargoTransportation.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net.Http;
@@ -70,6 +71,7 @@ namespace CargoTransportation.Controllers
             }
         }
 
+        [ServiceFilter(typeof(AuthenticatedAttribute))]
         public ActionResult AddRole()
         {
             return View();
@@ -77,6 +79,7 @@ namespace CargoTransportation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AuthenticatedAttribute))]
         public async Task<ActionResult> AddRole(UserRole userRole)
         {
             try

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CargoTransportation.ActionFilters;
 using CargoTransportation.ObjectsForUpdate;
 using CargoTransportation.Utils;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using Newtonsoft.Json;
 namespace CargoTransportation.Controllers
 {
     [Route("Cargoes/Categories")]
+    [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class CargoCategoriesController : ExtendedControllerBase
     {
         static CargoCategoryForUpdateDto CategoryToUpdate { get; set; }

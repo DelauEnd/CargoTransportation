@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CargoTransportation.ActionFilters;
 using CargoTransportation.ObjectsForUpdate;
 using CargoTransportation.Utils;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,7 @@ using Newtonsoft.Json;
 namespace CargoTransportation.Controllers
 {
     [Route("Orders")]
+    [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class OrdersController : ExtendedControllerBase
     {
         static OrderForUpdateDto OrderToUpdate { get; set; }

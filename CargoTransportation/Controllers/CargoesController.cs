@@ -1,4 +1,5 @@
-﻿using CargoTransportation.ObjectsForUpdate;
+﻿using CargoTransportation.ActionFilters;
+using CargoTransportation.ObjectsForUpdate;
 using CargoTransportation.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace CargoTransportation.Controllers
 {
+    [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class CargoesController : ExtendedControllerBase
     {
         static CargoForUpdateDto CargoToUpdate { get; set; }
