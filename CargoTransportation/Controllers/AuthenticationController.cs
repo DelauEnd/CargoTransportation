@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CargoTransportation.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -8,19 +9,16 @@ namespace CargoTransportation.Controllers
 {
     public class AuthenticationController : ExtendedControllerBase
     {
-        // GET: Authentication
-        public ActionResult Index()
+        public ActionResult Login(string login, string password)
         {
-            return View();
+            var user = new UserForAuthenticationDto()
+            {
+                Password = password,
+                UserName = login
+            };
+            return View(user);
         }
 
-        // GET: Authentication/Login
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        // POST: Authentication/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(UserForAuthenticationDto user)
@@ -45,24 +43,52 @@ namespace CargoTransportation.Controllers
             }
         }
 
-
-
-        // GET: Authentication/Registration
         public ActionResult Registration()
         {
             return View();
         }
 
-        // POST: Authentication/Registration
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Registration(UserForCreationDto user)
+        public async Task<ActionResult> Registration(UserForCreationDto user)
         {
             try
             {
-                // TODO: Add insert logic here
+                HttpContent content = BuildHttpContent(user);
+                var response = await request.AuthenticationRequestHandler.CreateUser(content);
 
-                return RedirectToAction(nameof(Index));
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception();
+
+                var responseContent = JsonSerializer.Deserialize<TokenModel>(await response.Content.ReadAsStringAsync());
+
+                return RedirectToAction("Login", new { login = user.UserName, password = user.Password });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult AddRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddRole(UserRole userRole)
+        {
+            try
+            {
+                var response = await request.AuthenticationRequestHandler.AddRole(userRole.UserName, userRole.Role);
+
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception();
+
+                var responseContent = JsonSerializer.Deserialize<TokenModel>(await response.Content.ReadAsStringAsync());
+
+                return RedirectToAction(nameof(Index), "Home");
             }
             catch
             {

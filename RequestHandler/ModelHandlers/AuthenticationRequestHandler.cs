@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace RequestHandler.ModelHandlers
@@ -17,6 +18,10 @@ namespace RequestHandler.ModelHandlers
 
         public async Task<HttpResponseMessage> AuthenticateUser(HttpContent content)
             => await HttpClient.Client.PostAsync(controllerUrl + "/login", content);
+
+        public async Task<HttpResponseMessage> AddRole(string userName, string role)
+            => await HttpClient.Client.PostAsync(controllerUrl + $"/AddRole?login={userName}&role={role}", new StringContent("", Encoding.UTF8, "application/json"));
+
 
         public void AddJwtTokenToHeader(string token)
         {
