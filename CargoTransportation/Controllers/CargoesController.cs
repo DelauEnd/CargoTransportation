@@ -27,7 +27,6 @@ namespace CargoTransportation.Controllers
             var cargoes = JsonConvert.DeserializeObject<IEnumerable<CargoDto>>(await response.Content.ReadAsStringAsync());
             return View(cargoes);
         }
-
         
         [HttpGet]
         [Route("Cargoes/{id}/Details")]

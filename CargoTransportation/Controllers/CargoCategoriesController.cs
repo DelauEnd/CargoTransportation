@@ -16,8 +16,6 @@ namespace CargoTransportation.Controllers
     [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class CargoCategoriesController : ExtendedControllerBase
     {
-        static CargoCategoryForUpdateDto CategoryToUpdate { get; set; }
-
         [HttpGet]
         public async Task <ActionResult> Index()
         {
@@ -75,12 +73,12 @@ namespace CargoTransportation.Controllers
             var categories = JsonConvert.DeserializeObject<IEnumerable<CargoCategoryDto>>(await response.Content.ReadAsStringAsync());
             var category = categories.Where(categ => categ.Id == id).FirstOrDefault();
 
-            CategoryToUpdate = new CargoCategoryForUpdateDto
+            var categoryToUpdate = new CargoCategoryForUpdateDto
             {
                 Title = category.Title
             };
 
-            return View(CategoryToUpdate);
+            return View(categoryToUpdate);
         }
 
         [HttpPost]

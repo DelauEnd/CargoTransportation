@@ -12,21 +12,21 @@ using Newtonsoft.Json;
 
 namespace CargoTransportation.Controllers
 {
-    [Route ("Customers")]
+    [Route("Transport")]
     [ServiceFilter(typeof(AuthenticatedAttribute))]
-    public class CustomersController : ExtendedControllerBase
+    public class TransportController : ExtendedControllerBase
     {
-        static CustomerForUpdateDto CustomerToUpdate { get; set; }
+        static TransportForUpdateDto TransportToUpdate { get; set; }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var response = await request.CustomerRequestHandler.GetAllCustomers();
+            var response = await request.TransportRequestHandler.GetAllTransport();
 
             if (!response.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(response);
 
-            var customers = JsonConvert.DeserializeObject<IEnumerable<CustomerDto>>(await response.Content.ReadAsStringAsync());
+            var customers = JsonConvert.DeserializeObject<IEnumerable<TransportDto>>(await response.Content.ReadAsStringAsync());
             return View(customers);
         }
 
@@ -40,10 +40,10 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CustomerForCreationDto customer)
+        public async Task<ActionResult> Create(TransportForCreationDto transport)
         {
-            HttpContent content = BuildHttpContent(customer);
-            var response = await request.CustomerRequestHandler.CreateCustomer(content);
+            HttpContent content = BuildHttpContent(transport);
+            var response = await request.TransportRequestHandler.CreateTransport(content);
 
             if (!response.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(response);
@@ -55,7 +55,7 @@ namespace CargoTransportation.Controllers
         [Route("{id}/Delete")]
         public async Task<ActionResult> Delete(int id)
         {
-            var response = await request.CustomerRequestHandler.DeleteCustomerById(id);
+            var response = await request.TransportRequestHandler.DeleteTransportById(id);
 
             if (!response.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(response);
@@ -67,36 +67,51 @@ namespace CargoTransportation.Controllers
         [Route("{id}/Edit")]
         public async Task<ActionResult> Edit(int id)
         {
-            var response = await request.CustomerRequestHandler.GetCustomerById(id);
+            var response = await request.TransportRequestHandler.GetTransportById(id);
 
             if (!response.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(response);
 
-            var customer = JsonConvert.DeserializeObject<CustomerDto>(await response.Content.ReadAsStringAsync());
+            var transport = JsonConvert.DeserializeObject<TransportDto>(await response.Content.ReadAsStringAsync());
 
-            CustomerToUpdate = new CustomerForUpdateDto
+            TransportToUpdate = new TransportForUpdateDto
             {
-                Address = customer.Address,
-                ContactPerson = customer.ContactPerson
+                RegistrationNumber = transport.RegistrationNumber,
+                LoadCapacity = transport.LoadCapacity,
+                Driver = transport.Driver
             };
 
-            return View(CustomerToUpdate);
+            return View(TransportToUpdate);
         }
 
         [HttpPost]
         [Route("{id}/Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, CustomerForUpdateDto customer)
+        public async Task<ActionResult> Edit(int id, TransportForUpdateDto transport)
         {
-            var jsonPatch = JsonPatcher.CreatePatch(CustomerToUpdate, customer);
+            var jsonPatch = JsonPatcher.CreatePatch(TransportToUpdate, transport);
 
             HttpContent content = BuildHttpContent(jsonPatch);
-            var response = await request.CustomerRequestHandler.PatchCustomerById(id, content);
+            var response = await request.TransportRequestHandler.PatchTransportById(id, content);
 
             if (!response.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(response);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        [Route("{id}/Details")]
+        public async Task<ActionResult> Details(int id)
+        {
+            var response = await request.TransportRequestHandler.GetTransportById(id);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            var transport = JsonConvert.DeserializeObject<TransportDto>(await response.Content.ReadAsStringAsync());
+
+            return View(transport.Driver);
         }
     }
 }
