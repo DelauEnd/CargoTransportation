@@ -21,7 +21,7 @@ namespace RequestHandler.ModelHandlers
             => await HttpClient.Client.DeleteAsync(controllerUrl + $"/{routeId}");
 
         public async Task<HttpResponseMessage> PutRouteById(int routeId, HttpContent content)
-            => await HttpClient.Client.PatchAsync(controllerUrl + $"/{routeId}", content);
+            => await HttpClient.Client.PutAsync(controllerUrl + $"/{routeId}", content);
 
         public async Task<HttpResponseMessage> CreateRoute(HttpContent content)
                => await HttpClient.Client.PostAsync(controllerUrl, content);

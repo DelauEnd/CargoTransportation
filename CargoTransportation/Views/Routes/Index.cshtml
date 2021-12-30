@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CargoTransportation.TransportDto>
+﻿@model IEnumerable<CargoTransportation.RouteDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,7 +6,7 @@
 
 @section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
 
-<h1>Transport</h1>
+<h1>Routes</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -18,10 +18,7 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegistrationNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LoadCapacity)
+                @Html.DisplayNameFor(model => model.TransportRegistrationNumber)
             </th>
             <th></th>
         </tr>
@@ -34,15 +31,12 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RegistrationNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LoadCapacity)
+                    @Html.DisplayFor(modelItem => item.TransportRegistrationNumber)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Driver", "Details", new { id = item.Id }) |
-                    <a href="#" onclick="SubmitRedirect('Transport', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
+                    @Html.ActionLink("Cargoes", "Details", new { id = item.Id }) |
+                    <a href="#" onclick="SubmitRedirect('Routes', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
                 </td>
             </tr>
         }

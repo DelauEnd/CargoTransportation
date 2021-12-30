@@ -4,7 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Customers</h1>
+
+@section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -34,31 +36,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.ContactPerson.Name)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.ContactPerson.Surname)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.ContactPerson.Patronymic)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.ContactPerson.PhoneNumber)
-            </th>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                <a href="#" onclick="SubmitRedirect('Customers', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPerson.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPerson.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPerson.Patronymic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPerson.PhoneNumber)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    <a href="#" onclick="SubmitRedirect('Customers', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
