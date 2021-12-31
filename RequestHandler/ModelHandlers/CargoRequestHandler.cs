@@ -14,6 +14,9 @@ namespace RequestHandler.ModelHandlers
         public async Task<HttpResponseMessage> GetAllCargoes()
             => await HttpClient.Client.GetAsync(controllerUrl);
 
+        public async Task<HttpResponseMessage> GetUnassignedCargoes()
+            => await HttpClient.Client.GetAsync(controllerUrl+"/Unassigned");
+
         public async Task<HttpResponseMessage> GetCargoById(int cargoId)
             => await HttpClient.Client.GetAsync(controllerUrl + $"/{cargoId}");
 

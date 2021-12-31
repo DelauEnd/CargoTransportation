@@ -20,7 +20,7 @@ namespace RequestHandler.ModelHandlers
             => await HttpClient.Client.PostAsync(controllerUrl + "/login", content);
 
         public async Task<HttpResponseMessage> AddRole(string userName, string role)
-            => await HttpClient.Client.PostAsync(controllerUrl + $"/AddRole?login={userName}&role={role}", new StringContent("", Encoding.UTF8, "application/json"));
+            => await HttpClient.Client.PostAsync(controllerUrl + $"/AddRole?login={userName}&role={role}", EmptyContent);
 
 
         public void AddJwtTokenToHeader(string token)

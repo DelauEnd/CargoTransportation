@@ -35,7 +35,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Cargoes", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Cargoes", "Cargoes", new { id = item.Id }) |
                     <a href="#" onclick="SubmitRedirect('Routes', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
                 </td>
             </tr>

@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace RequestHandler.ModelHandlers
@@ -26,8 +27,15 @@ namespace RequestHandler.ModelHandlers
         public async Task<HttpResponseMessage> CreateRoute(HttpContent content)
                => await HttpClient.Client.PostAsync(controllerUrl, content);
 
-        public async Task<HttpResponseMessage> MarkCargoToRoute(int routeId, HttpContent content)
-              => await HttpClient.Client.PostAsync(controllerUrl + $"/{routeId}/Cargoes", content);
+        public async Task<HttpResponseMessage> AssignCargoesToRoute(int routeId, int[] ids)
+            => await HttpClient.Client.PostAsync(controllerUrl + $"/{routeId}/Cargoes?ids=" + BuildIdsString(ids), EmptyContent);
+
+        public string BuildIdsString(int[] ids)
+        {
+            StringBuilder str = new StringBuilder();
+            str.AppendJoin(",",ids);
+            return str.ToString();
+        }
 
         public async Task<HttpResponseMessage> GetCargoesForRoute(int routeId)
                => await HttpClient.Client.GetAsync(controllerUrl + $"/{routeId}/Cargoes");

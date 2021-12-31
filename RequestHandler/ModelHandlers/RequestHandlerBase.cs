@@ -1,4 +1,7 @@
-﻿namespace RequestHandler.ModelHandlers
+﻿using System.Net.Http;
+using System.Text;
+
+namespace RequestHandler.ModelHandlers
 {
     public class RequestHandlerBase
     {
@@ -8,5 +11,8 @@
         {
             this.HttpClient = client;
         }
+
+        public StringContent EmptyContent =>
+            new StringContent("", Encoding.UTF8, "application/json");
     }
 }

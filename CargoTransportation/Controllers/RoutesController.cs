@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 using CargoTransportation.ActionFilters;
 using CargoTransportation.ObjectsForUpdate;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CargoTransportation.Controllers
 {
     [Route("Routes")]
-    [ServiceFilter(typeof(AuthenticatedAttribute))]   
+    [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class RoutesController : ExtendedControllerBase
     {
+        static int RouteId { get; set; }
+
         [HttpGet]
         public async Task<ActionResult> Index()
         {
@@ -35,8 +38,8 @@ namespace CargoTransportation.Controllers
 
             if (!transportResponse.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(transportResponse);
-   
-              var transport = JsonConvert.DeserializeObject<IEnumerable<TransportDto>>(await transportResponse.Content.ReadAsStringAsync());
+
+            var transport = JsonConvert.DeserializeObject<IEnumerable<TransportDto>>(await transportResponse.Content.ReadAsStringAsync());
 
             ViewBag.transport = transport;
 
@@ -87,7 +90,7 @@ namespace CargoTransportation.Controllers
 
             var routeToUpdate = new RouteForUpdateDto
             {
-                 TransportRegistrationNumber = route.TransportRegistrationNumber
+                TransportRegistrationNumber = route.TransportRegistrationNumber
             };
 
             return View(routeToUpdate);
@@ -105,6 +108,69 @@ namespace CargoTransportation.Controllers
                 return UnsuccesfullStatusCode(response);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        [Route("{id}/Cargoes")]
+        public async Task<ActionResult> Cargoes(int id)
+        {
+            var response = await request.RouteRequestHandler.GetCargoesForRoute(id);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            RouteId = id;
+            ViewBag.RouteToEdit = RouteId;
+
+            var cargoes = JsonConvert.DeserializeObject<IEnumerable<CargoDto>>(await response.Content.ReadAsStringAsync());
+
+            return View(cargoes);
+        }
+
+        [HttpGet]
+        [Route("{routeId}/UnassignCargo")]
+        public async Task<ActionResult> UnassignCargo(int routeId, int cargoId)
+        {
+            var jsonDiff = new JsonPatchDocument();
+            jsonDiff.Remove("RouteId");
+
+            HttpContent content = BuildHttpContent(jsonDiff);
+            var response = await request.CargoRequestHandler.PatchCargoById(cargoId, content);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            return RedirectToAction("Cargoes", new { id = routeId });
+        }
+
+        [HttpGet]
+        [Route("{id}/AssignCargoes")]
+        public async Task<ActionResult> AssignCargoes(int id)
+        {
+            var response = await request.RouteRequestHandler.GetRouteById(id);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            var route = JsonConvert.DeserializeObject<RouteDto>(await response.Content.ReadAsStringAsync());
+
+            var cargoesResponse = await request.CargoRequestHandler.GetUnassignedCargoes();
+            var cargoes = JsonConvert.DeserializeObject<IEnumerable<CargoDto>>(await cargoesResponse.Content.ReadAsStringAsync());
+
+            return View(cargoes);
+        }
+
+        [HttpPost]
+        [Route("{id}/AssignCargoes")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AssignCargoes(int[] ids, int id)
+        {
+            var response = await request.RouteRequestHandler.AssignCargoesToRoute(id, ids);
+
+            if (!response.IsSuccessStatusCode)
+                return UnsuccesfullStatusCode(response);
+
+            return RedirectToAction("Cargoes", new { id });
         }
     }
 }
