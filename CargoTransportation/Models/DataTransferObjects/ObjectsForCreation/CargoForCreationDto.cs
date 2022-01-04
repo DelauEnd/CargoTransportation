@@ -22,6 +22,9 @@ namespace CargoTransportation
         [Range(0, double.MaxValue, ErrorMessage = "Weight - required field and can not be less then 0")]
         public double Weight { get; set; }
 
+        [Required(ErrorMessage = "Image - required field")]
+        public byte[] Image { get; set; }
+
         [Required(ErrorMessage = "Dimensions - required fields")]
         public Dimensions Dimensions { get; set; }
     }

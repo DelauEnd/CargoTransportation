@@ -15,6 +15,8 @@ namespace CargoTransportation
 
         public double Weight { get; set; }
 
+        public byte[] Image { get; set; }
+
         public Dimensions Dimensions { get; set; }
     }
 }

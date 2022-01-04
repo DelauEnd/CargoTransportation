@@ -1,10 +1,12 @@
 ﻿using CargoTransportation.ActionFilters;
 using CargoTransportation.ObjectsForUpdate;
 using CargoTransportation.Utils;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -39,6 +41,7 @@ namespace CargoTransportation.Controllers
 
             var cargo = JsonConvert.DeserializeObject<CargoDto>(await response.Content.ReadAsStringAsync());
 
+            ViewBag.Image = cargo.Image;
             return View(cargo.Dimensions);
         }
 
@@ -61,8 +64,11 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Orders/{orderId}/CreateCargo")]
-        public async Task<ActionResult> CreateCargo(CargoForCreationDto cargo, int orderId)
+        public async Task<ActionResult> CreateCargo(CargoForCreationDto cargo, int orderId, [FromForm]IFormFile addedImage)
         {
+            var image = addedImage != null ? BuildImageBytes(addedImage) : new byte[0];
+            cargo.Image = image;
+
             var cargoToAdd = new List<CargoForCreationDto>() { cargo };
 
             HttpContent content = BuildHttpContent(cargoToAdd);
@@ -72,6 +78,12 @@ namespace CargoTransportation.Controllers
                 return UnsuccesfullStatusCode(response);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private byte[] BuildImageBytes(IFormFile image)
+        {
+            using (var binaryReader = new BinaryReader(image.OpenReadStream()))  
+                return binaryReader.ReadBytes((int)image.Length);           
         }
 
         [HttpGet]
@@ -107,8 +119,11 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Cargoes/{id}/Edit")]
-        public async Task<ActionResult> Edit(int id, CargoForUpdateDto cargo)
+        public async Task<ActionResult> Edit(int id, CargoForUpdateDto cargo, [FromForm]IFormFile addedImage)
         {
+            var image = addedImage != null ? BuildImageBytes(addedImage) : CargoToUpdate.Image;
+            cargo.Image = image;
+
             var jsonPatch = JsonPatcher.CreatePatch(CargoToUpdate, cargo);
 
             HttpContent content = BuildHttpContent(jsonPatch);

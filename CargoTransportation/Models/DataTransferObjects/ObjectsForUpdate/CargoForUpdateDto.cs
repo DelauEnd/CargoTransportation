@@ -17,6 +17,8 @@ namespace CargoTransportation.ObjectsForUpdate
         [Range(0, double.MaxValue, ErrorMessage = "Weight - required field and can not be less then 0")]
         public double Weight { get; set; }
 
+        public byte[] Image { get; set; }
+
         public Dimensions Dimensions { get; set; }
     }
 }

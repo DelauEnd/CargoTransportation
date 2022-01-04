@@ -58,7 +58,6 @@
                     @Html.DisplayFor(modelItem => item.Weight)
                 </td>
                 <td>
-                    @Html.ActionLink("Cargoes", "Cargoes", new { id = item.Id }) |
                     @Html.ActionLink("Unassign", "UnassignCargo", new { cargoId = item.Id, routeId = ViewBag.RouteToEdit })
                 </td>
             </tr>
