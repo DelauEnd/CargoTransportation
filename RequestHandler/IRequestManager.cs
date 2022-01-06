@@ -14,6 +14,6 @@ namespace RequestHandler
         public TransportRequestHandler TransportRequestHandler { get; }
 
         public void SetUnauthenticated();
-        public void RemoveToken();
+        public void UnauthorizeUser();
     }
 }

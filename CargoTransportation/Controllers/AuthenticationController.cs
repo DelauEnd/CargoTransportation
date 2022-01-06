@@ -32,9 +32,9 @@ namespace CargoTransportation.Controllers
                 if (!response.IsSuccessStatusCode)
                     throw new Exception();
 
-                var responseContent = JsonSerializer.Deserialize<TokenModel>(await response.Content.ReadAsStringAsync());
+                var responseContent = JsonSerializer.Deserialize<AuthenticatedUserInfo>(await response.Content.ReadAsStringAsync());
 
-                request.AuthenticationRequestHandler.AddJwtTokenToHeader(responseContent.Token);
+                request.AuthenticationRequestHandler.InitUser(responseContent.Token, responseContent.Roles);
 
                 return RedirectToAction(nameof(Index), "Home");
             }
@@ -61,7 +61,7 @@ namespace CargoTransportation.Controllers
                 if (!response.IsSuccessStatusCode)
                     throw new Exception();
 
-                var responseContent = JsonSerializer.Deserialize<TokenModel>(await response.Content.ReadAsStringAsync());
+                var responseContent = JsonSerializer.Deserialize<AuthenticatedUserInfo>(await response.Content.ReadAsStringAsync());
 
                 return RedirectToAction("Login", new { login = user.UserName, password = user.Password });
             }
@@ -89,7 +89,7 @@ namespace CargoTransportation.Controllers
                 if (!response.IsSuccessStatusCode)
                     throw new Exception();
 
-                var responseContent = JsonSerializer.Deserialize<TokenModel>(await response.Content.ReadAsStringAsync());
+                var responseContent = JsonSerializer.Deserialize<AuthenticatedUserInfo>(await response.Content.ReadAsStringAsync());
 
                 return RedirectToAction(nameof(Index), "Home");
             }

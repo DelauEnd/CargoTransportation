@@ -5,7 +5,7 @@ namespace RequestHandler.ModelHandlers
 {
     public class CargoCategoriesRequestHandler : RequestHandlerBase
     {
-        private readonly string controllerUrl = "/api/Cargoes/Categories";
+        private readonly string controllerUrl = "/api/Categories";
 
         public CargoCategoriesRequestHandler(IHttpClientService client) : base(client)
         {

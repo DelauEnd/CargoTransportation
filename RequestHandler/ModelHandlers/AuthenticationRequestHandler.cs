@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,11 @@ namespace RequestHandler.ModelHandlers
             => await HttpClient.Client.PostAsync(controllerUrl + $"/AddRole?login={userName}&role={role}", EmptyContent);
 
 
-        public void AddJwtTokenToHeader(string token)
+        public void InitUser(string token, IEnumerable<string> roles)
         {
             HttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpClient.Authenticated = true;
+            HttpClient.UserRoles = roles;
         }
     }
 }

@@ -21,9 +21,10 @@ namespace RequestHandler
         public void SetUnauthenticated()        
             => HttpClient.Authenticated = false;      
 
-        public void RemoveToken()
+        public void UnauthorizeUser()
         {
             SetUnauthenticated();
+            HttpClient.UserRoles = null;
             HttpClient.Client.DefaultRequestHeaders.Authorization = null;
         }
 

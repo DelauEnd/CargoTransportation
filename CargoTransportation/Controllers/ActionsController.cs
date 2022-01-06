@@ -11,7 +11,7 @@ namespace CargoTransportation.Controllers
         [HttpGet]
         public IActionResult Logout()
         {
-            request.RemoveToken();
+            request.UnauthorizeUser();
             return RedirectToAction("Index","Home");
         }
     }
