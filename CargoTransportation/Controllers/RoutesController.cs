@@ -32,6 +32,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("Create")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Create()
         {
             var transportResponse = await request.TransportRequestHandler.GetAllTransport();
@@ -49,6 +50,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("Create")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Create(RouteForCreationDto route)
         {
             HttpContent content = BuildHttpContent(route);
@@ -62,6 +64,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Delete")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Delete(int id)
         {
             var response = await request.RouteRequestHandler.DeleteRouteById(id);
@@ -74,6 +77,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Edit")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Edit(int id)
         {
             var response = await request.RouteRequestHandler.GetRouteById(id);
@@ -99,6 +103,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("{id}/Edit")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Edit(int id, RouteForUpdateDto route)
         {
             HttpContent content = BuildHttpContent(route);
@@ -112,6 +117,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Cargoes")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Cargoes(int id)
         {
             var response = await request.RouteRequestHandler.GetCargoesForRoute(id);
@@ -129,6 +135,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{routeId}/UnassignCargo")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> UnassignCargo(int routeId, int cargoId)
         {
             var jsonDiff = new JsonPatchDocument();
@@ -145,6 +152,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/AssignCargoes")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> AssignCargoes(int id)
         {
             var response = await request.RouteRequestHandler.GetRouteById(id);
@@ -163,6 +171,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("{id}/AssignCargoes")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> AssignCargoes(int[] ids, int id)
         {
             var response = await request.RouteRequestHandler.AssignCargoesToRoute(id, ids);

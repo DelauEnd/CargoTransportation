@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RequestHandler.ModelHandlers;
 using System;
+using System.Collections.Generic;
 
 namespace RequestHandler
 {
@@ -24,7 +25,7 @@ namespace RequestHandler
         public void UnauthorizeUser()
         {
             SetUnauthenticated();
-            HttpClient.UserRoles = null;
+            HttpClient.UserRoles = new List<string>();
             HttpClient.Client.DefaultRequestHeaders.Authorization = null;
         }
 

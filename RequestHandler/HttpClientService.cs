@@ -21,6 +21,7 @@ namespace RequestHandler
             Client = new HttpClient(Handler);
 
             Authenticated = false;
+            UserRoles = new List<string>();
         }
     }
 }

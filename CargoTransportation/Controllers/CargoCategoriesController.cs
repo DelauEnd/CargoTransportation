@@ -30,6 +30,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("Create")]
+        [ServiceFilter(typeof(HasAdministratorRole))]
         public ActionResult Create()
         {
             return View();
@@ -38,6 +39,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("Create")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasAdministratorRole))]
         public async Task<ActionResult> Create(CategoryForCreationDto category)
         {
             HttpContent content = BuildHttpContent(category);
@@ -51,6 +53,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Delete")]
+        [ServiceFilter(typeof(HasAdministratorRole))]
         public async Task<ActionResult> Delete(int id)
         {
             var response = await request.CargoRequestHandler.DeleteCargoById(id);
@@ -63,6 +66,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Edit")]
+        [ServiceFilter(typeof(HasAdministratorRole))]
         public async Task<ActionResult> Edit(int id)
         {
             var response = await request.CargoCategoriesRequestHandler.GetAllCategories();
@@ -84,6 +88,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("{id}/Edit")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasAdministratorRole))]
         public async Task<ActionResult> Edit(int id, CargoCategoryForUpdateDto category)
         {
             HttpContent content = BuildHttpContent(category);

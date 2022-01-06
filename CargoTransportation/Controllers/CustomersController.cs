@@ -32,6 +32,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("Create")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public ActionResult Create()
         {
             return View();
@@ -40,6 +41,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("Create")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Create(CustomerForCreationDto customer)
         {
             HttpContent content = BuildHttpContent(customer);
@@ -53,6 +55,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Delete")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Delete(int id)
         {
             var response = await request.CustomerRequestHandler.DeleteCustomerById(id);
@@ -65,6 +68,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Edit")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Edit(int id)
         {
             var response = await request.CustomerRequestHandler.GetCustomerById(id);
@@ -86,6 +90,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("{id}/Edit")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Edit(int id, CustomerForUpdateDto customer)
         {
             var jsonPatch = JsonPatcher.CreatePatch(CustomerToUpdate, customer);

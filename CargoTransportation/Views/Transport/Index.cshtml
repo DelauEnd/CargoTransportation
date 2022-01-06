@@ -7,10 +7,12 @@
 @section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
 
 <h1>Transport</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (request.HttpClient.UserRoles.Contains("Manager"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -40,9 +42,13 @@
                     @Html.DisplayFor(modelItem => item.LoadCapacity)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Driver", "Details", new { id = item.Id }) |
-                    <a href="#" onclick="SubmitRedirect('Transport', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
+
+                    @Html.ActionLink("Driver", "Details", new { id = item.Id })
+                    @if (request.HttpClient.UserRoles.Contains("Manager"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                        <a href="#" onclick="SubmitRedirect('Transport', 'Delete', '@item.Id', 'Are you sure you want to delete?')"> Delete </a>
+                    }
                 </td>
             </tr>
         }

@@ -46,6 +46,7 @@ namespace CargoTransportation.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(HasManagerRole))]
         [Route("Orders/{orderId}/CreateCargo")]
         public async Task<ActionResult> CreateCargo(int orderId)
         {
@@ -63,6 +64,7 @@ namespace CargoTransportation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasManagerRole))]
         [Route("Orders/{orderId}/CreateCargo")]
         public async Task<ActionResult> CreateCargo(CargoForCreationDto cargo, int orderId, [FromForm]IFormFile addedImage)
         {
@@ -88,6 +90,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("Cargoes/{id}/Edit")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Edit(int id)
         {
             var response = await request.CargoRequestHandler.GetCargoById(id);
@@ -119,6 +122,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Cargoes/{id}/Edit")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Edit(int id, CargoForUpdateDto cargo, [FromForm]IFormFile addedImage)
         {
             var image = addedImage != null ? BuildImageBytes(addedImage) : CargoToUpdate.Image;
@@ -137,6 +141,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("Cargoes/{id}/Delete")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Delete(int id)
         {
             var response = await request.CargoRequestHandler.DeleteCargoById(id);

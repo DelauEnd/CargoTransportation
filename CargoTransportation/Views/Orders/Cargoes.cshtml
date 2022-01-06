@@ -6,7 +6,10 @@
 @section LeftMenu{@{await Html.RenderPartialAsync("RedirectPanel"); } }
 
 <h1>Cargoes</h1>
-    @Html.ActionLink("Add", "CreateCargo", "Cargoes" , new { orderId = ViewBag.OrderToEdit })
+@if (request.HttpClient.UserRoles.Contains("Manager"))
+{
+    @Html.ActionLink("Add", "CreateCargo", "Cargoes", new { orderId = ViewBag.OrderToEdit })
+}
 <table class="table">
     <thead>
         <tr>
@@ -54,9 +57,12 @@
                     @Html.DisplayFor(modelItem => item.Weight)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "Cargoes", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", "Cargoes", new { id = item.Id }) |
-                    <a href="#" onclick="SubmitRedirect('Cargoes', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
+                    @Html.ActionLink("Details", "Details", "Cargoes", new { id = item.Id })
+                    @if (request.HttpClient.UserRoles.Contains("Manager"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Cargoes", new { id = item.Id })
+                        <a href="#" onclick="SubmitRedirect('Cargoes', 'Delete', '@item.Id', 'Are you sure you want to delete?')"> Delete </a>
+                    }
                 </td>
             </tr>
         }

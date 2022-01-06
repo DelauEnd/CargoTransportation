@@ -8,9 +8,13 @@
 
 <h1>Cargo categories</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (request.HttpClient.UserRoles.Contains("Administrator"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -34,10 +38,14 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    <a href="#" onclick="SubmitRedirect('CargoCategories', 'Delete', '@item.Id', 'Are you sure you want to delete?')">Delete</a>
+                    @if (request.HttpClient.UserRoles.Contains("Administrator"))
+                    { 
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })                  
+                        <a href = "#" onclick = "SubmitRedirect('CargoCategories', 'Delete', '@item.Id', 'Are you sure you want to delete?')" > Delete </a>
+                    }
                 </td>
+
             </tr>
         }
-    </tbody>
+</tbody>
 </table>

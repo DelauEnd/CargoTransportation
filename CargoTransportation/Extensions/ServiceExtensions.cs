@@ -15,6 +15,8 @@ namespace CargoTransportation.Extensions
         public static void ConfigureActionAttributes(this IServiceCollection services)
         {
             services.AddSingleton<AuthenticatedAttribute>();
+            services.AddSingleton<HasManagerRole>();
+            services.AddSingleton<HasAdministratorRole>();
         }
     }
 }

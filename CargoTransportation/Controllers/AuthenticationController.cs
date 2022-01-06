@@ -10,6 +10,7 @@ namespace CargoTransportation.Controllers
 {
     public class AuthenticationController : ExtendedControllerBase
     {
+        [HttpGet]
         public ActionResult Login(string login, string password)
         {
             var user = new UserForAuthenticationDto()
@@ -44,6 +45,7 @@ namespace CargoTransportation.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Registration()
         {
             return View();
@@ -71,7 +73,8 @@ namespace CargoTransportation.Controllers
             }
         }
 
-        [ServiceFilter(typeof(AuthenticatedAttribute))]
+        [HttpGet]
+        [ServiceFilter(typeof(HasAdministratorRole))]
         public ActionResult AddRole()
         {
             return View();
@@ -79,7 +82,7 @@ namespace CargoTransportation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ServiceFilter(typeof(AuthenticatedAttribute))]
+        [ServiceFilter(typeof(HasAdministratorRole))]
         public async Task<ActionResult> AddRole(UserRole userRole)
         {
             try

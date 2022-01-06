@@ -51,6 +51,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("Create")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Create()
         {
             var customersResponse = await request.CustomerRequestHandler.GetAllCustomers();
@@ -68,6 +69,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("Create")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Create(OrderForCreationDto order)
         {
             HttpContent content = BuildHttpContent(order);
@@ -81,6 +83,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Edit")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Edit(int id)
         {
             var response = await request.OrderRequestHandler.GetOrderById(id);
@@ -108,6 +111,7 @@ namespace CargoTransportation.Controllers
         [HttpPost]
         [Route("{id}/Edit")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Edit(int id, OrderForUpdateDto order)
         {
             var jsonPatch = JsonPatcher.CreatePatch(OrderToUpdate, order);
@@ -123,6 +127,7 @@ namespace CargoTransportation.Controllers
 
         [HttpGet]
         [Route("{id}/Delete")]
+        [ServiceFilter(typeof(HasManagerRole))]
         public async Task<ActionResult> Delete(int id)
         {
             var response = await request.OrderRequestHandler.DeleteOrderById(id);

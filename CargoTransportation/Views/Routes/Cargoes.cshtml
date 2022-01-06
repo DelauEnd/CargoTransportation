@@ -58,7 +58,8 @@
                     @Html.DisplayFor(modelItem => item.Weight)
                 </td>
                 <td>
-                    @Html.ActionLink("Unassign", "UnassignCargo", new { cargoId = item.Id, routeId = ViewBag.RouteToEdit })
+                    @if (request.HttpClient.UserRoles.Contains("Manager"))
+                        @Html.ActionLink("Unassign", "UnassignCargo", new { cargoId = item.Id, routeId = ViewBag.RouteToEdit })
                 </td>
             </tr>
         }
