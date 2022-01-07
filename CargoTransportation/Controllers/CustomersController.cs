@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using CargoTransportation.ActionFilters;
+﻿using CargoTransportation.ActionFilters;
 using CargoTransportation.ObjectsForUpdate;
 using CargoTransportation.Utils;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CargoTransportation.Controllers
 {
-    [Route ("Customers")]
+    [Route("Customers")]
     [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class CustomersController : ExtendedControllerBase
     {
-        static CustomerForUpdateDto CustomerToUpdate { get; set; }
+        private static CustomerForUpdateDto CustomerToUpdate { get; set; }
 
         [HttpGet]
         public async Task<ActionResult> Index()

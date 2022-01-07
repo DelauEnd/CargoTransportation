@@ -1,15 +1,12 @@
-﻿using System;
+﻿using CargoTransportation.ActionFilters;
+using CargoTransportation.ObjectsForUpdate;
+using CargoTransportation.Utils;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
-using CargoTransportation.ActionFilters;
-using CargoTransportation.ObjectsForUpdate;
-using CargoTransportation.Utils;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CargoTransportation.Controllers
 {
@@ -17,7 +14,7 @@ namespace CargoTransportation.Controllers
     [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class OrdersController : ExtendedControllerBase
     {
-        static OrderForUpdateDto OrderToUpdate { get; set; }
+        private static OrderForUpdateDto OrderToUpdate { get; set; }
 
         [HttpGet]
         public async Task<ActionResult> Index()
@@ -97,7 +94,7 @@ namespace CargoTransportation.Controllers
             var customers = JsonConvert.DeserializeObject<IEnumerable<CustomerDto>>(await customersResponse.Content.ReadAsStringAsync());
 
             ViewBag.customers = customers;
- 
+
             OrderToUpdate = new OrderForUpdateDto
             {
                 Status = order.Status,

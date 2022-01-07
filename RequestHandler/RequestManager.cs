@@ -19,8 +19,8 @@ namespace RequestHandler
             HttpClient.Client.BaseAddress = new Uri(BaseUrl);
         }
 
-        public void SetUnauthenticated()        
-            => HttpClient.Authenticated = false;      
+        public void SetUnauthenticated()
+            => HttpClient.Authenticated = false;
 
         public void UnauthorizeUser()
         {

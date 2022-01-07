@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using RequestHandler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CargoTransportation.ActionFilters
 {
@@ -18,7 +14,7 @@ namespace CargoTransportation.ActionFilters
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
-        {            
+        {
         }
 
         public void OnActionExecuting(ActionExecutingContext context)

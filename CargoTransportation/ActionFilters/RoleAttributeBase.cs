@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using RequestHandler;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CargoTransportation.ActionFilters
 {
@@ -24,7 +22,7 @@ namespace CargoTransportation.ActionFilters
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            if(!RequestManager.HttpClient.UserRoles.Contains(RequiredRole))
+            if (!RequestManager.HttpClient.UserRoles.Contains(RequiredRole))
                 context.Result = new RedirectToActionResult("Index", "Home", null);
         }
     }

@@ -33,7 +33,7 @@ namespace RequestHandler.ModelHandlers
         public string BuildIdsString(int[] ids)
         {
             StringBuilder str = new StringBuilder();
-            str.AppendJoin(",",ids);
+            str.AppendJoin(",", ids);
             return str.ToString();
         }
 

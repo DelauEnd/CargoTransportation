@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using CargoTransportation.ActionFilters;
+﻿using CargoTransportation.ActionFilters;
 using CargoTransportation.ObjectsForUpdate;
 using CargoTransportation.Utils;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CargoTransportation.Controllers
 {
@@ -16,7 +13,7 @@ namespace CargoTransportation.Controllers
     [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class TransportController : ExtendedControllerBase
     {
-        static TransportForUpdateDto TransportToUpdate { get; set; }
+        private static TransportForUpdateDto TransportToUpdate { get; set; }
 
         [HttpGet]
         public async Task<ActionResult> Index()

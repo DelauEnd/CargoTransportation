@@ -1,7 +1,6 @@
 ﻿using CargoTransportation.ActionFilters;
 using CargoTransportation.ObjectsForUpdate;
 using CargoTransportation.Utils;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,7 +15,7 @@ namespace CargoTransportation.Controllers
     [ServiceFilter(typeof(AuthenticatedAttribute))]
     public class CargoesController : ExtendedControllerBase
     {
-        static CargoForUpdateDto CargoToUpdate { get; set; }
+        private static CargoForUpdateDto CargoToUpdate { get; set; }
 
         [HttpGet]
         public async Task<ActionResult> Index()
@@ -29,7 +28,7 @@ namespace CargoTransportation.Controllers
             var cargoes = JsonConvert.DeserializeObject<IEnumerable<CargoDto>>(await response.Content.ReadAsStringAsync());
             return View(cargoes);
         }
-        
+
         [HttpGet]
         [Route("Cargoes/{id}/Details")]
         public async Task<ActionResult> Details(int id)
@@ -84,8 +83,8 @@ namespace CargoTransportation.Controllers
 
         private byte[] BuildImageBytes(IFormFile image)
         {
-            using (var binaryReader = new BinaryReader(image.OpenReadStream()))  
-                return binaryReader.ReadBytes((int)image.Length);           
+            using (var binaryReader = new BinaryReader(image.OpenReadStream()))
+                return binaryReader.ReadBytes((int)image.Length);
         }
 
         [HttpGet]
@@ -113,7 +112,7 @@ namespace CargoTransportation.Controllers
                 DepartureDate = cargo.DepartureDate,
                 CategoryId = categories.Where(categ => categ.Title == cargo.Category).FirstOrDefault().Id,
                 Weight = cargo.Weight,
-                Dimensions = cargo.Dimensions,                
+                Dimensions = cargo.Dimensions,
             };
 
             return View(CargoToUpdate);

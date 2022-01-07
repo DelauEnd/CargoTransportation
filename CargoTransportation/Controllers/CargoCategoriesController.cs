@@ -1,14 +1,11 @@
-﻿using System;
+﻿using CargoTransportation.ActionFilters;
+using CargoTransportation.ObjectsForUpdate;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CargoTransportation.ActionFilters;
-using CargoTransportation.ObjectsForUpdate;
-using CargoTransportation.Utils;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CargoTransportation.Controllers
 {
@@ -17,7 +14,7 @@ namespace CargoTransportation.Controllers
     public class CargoCategoriesController : ExtendedControllerBase
     {
         [HttpGet]
-        public async Task <ActionResult> Index()
+        public async Task<ActionResult> Index()
         {
             var response = await request.CargoCategoriesRequestHandler.GetAllCategories();
 

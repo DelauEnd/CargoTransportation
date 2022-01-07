@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CargoTransportation.Utils
 {
@@ -20,7 +17,7 @@ namespace CargoTransportation.Utils
             return patch;
         }
 
-        static void FillPatchForObject(JObject orig, JObject mod, JsonPatchDocument patch, string path)
+        private static void FillPatchForObject(JObject orig, JObject mod, JsonPatchDocument patch, string path)
         {
             var origNames = orig.Properties().Select(x => x.Name).ToArray();
             var modNames = mod.Properties().Select(x => x.Name).ToArray();
@@ -49,7 +46,7 @@ namespace CargoTransportation.Utils
                 {
                     patch.Replace(path + modProp.Name, modProp.Value);
                 }
-                else if (!string.Equals ( origProp.Value.ToString(Newtonsoft.Json.Formatting.None), modProp.Value.ToString(Newtonsoft.Json.Formatting.None)))
+                else if (!string.Equals(origProp.Value.ToString(Newtonsoft.Json.Formatting.None), modProp.Value.ToString(Newtonsoft.Json.Formatting.None)))
                 {
                     if (origProp.Value.Type == JTokenType.Object)
                     {
