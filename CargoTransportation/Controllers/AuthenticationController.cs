@@ -41,6 +41,7 @@ namespace CargoTransportation.Controllers
             }
             catch
             {
+                ViewBag.loginFailed = true;
                 return View();
             }
         }
@@ -69,6 +70,7 @@ namespace CargoTransportation.Controllers
             }
             catch
             {
+                ViewBag.registrationFailed = true;
                 return View();
             }
         }
@@ -98,6 +100,7 @@ namespace CargoTransportation.Controllers
             }
             catch
             {
+                ViewBag.addingFailed = true;
                 return View();
             }
         }

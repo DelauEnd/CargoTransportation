@@ -21,6 +21,10 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+            @if (ViewBag.loginFailed != null && ViewBag.loginFailed == true)
+            {
+                <p class="text-danger">Incorrect login or password</p>
+            }
             <div class="form-group">
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
