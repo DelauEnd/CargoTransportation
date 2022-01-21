@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace CargoTransportation.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ExtendedControllerBase
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -19,7 +19,7 @@ namespace CargoTransportation.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
