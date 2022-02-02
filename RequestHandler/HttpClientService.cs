@@ -10,7 +10,7 @@ namespace RequestHandler
         public HttpClientHandler Handler { get; set; }
         public CookieContainer CookieContainer { get; set; }
         public bool Authenticated { get; set; }
-        public IEnumerable<string> UserRoles { get; set; }
+        public List<string> UserRoles { get; private set; }
 
         public HttpClientService()
         {
@@ -21,6 +21,7 @@ namespace RequestHandler
             Client = new HttpClient(Handler);
 
             Authenticated = false;
+
             UserRoles = new List<string>();
         }
     }

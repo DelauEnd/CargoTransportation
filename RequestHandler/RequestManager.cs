@@ -25,7 +25,7 @@ namespace RequestHandler
         public void UnauthorizeUser()
         {
             SetUnauthenticated();
-            HttpClient.UserRoles = new List<string>();
+            HttpClient.UserRoles.Clear();
             HttpClient.Client.DefaultRequestHeaders.Authorization = null;
         }
 
