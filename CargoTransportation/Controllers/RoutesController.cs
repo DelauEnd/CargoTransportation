@@ -156,9 +156,7 @@ namespace CargoTransportation.Controllers
 
             if (!response.IsSuccessStatusCode)
                 return UnsuccesfullStatusCode(response);
-
-            var route = JsonConvert.DeserializeObject<RouteDto>(await response.Content.ReadAsStringAsync());
-
+       
             var cargoesResponse = await request.CargoRequestHandler.GetUnassignedCargoes();
             var cargoes = JsonConvert.DeserializeObject<IEnumerable<CargoDto>>(await cargoesResponse.Content.ReadAsStringAsync());
 

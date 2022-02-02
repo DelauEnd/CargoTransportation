@@ -27,7 +27,7 @@ namespace RequestHandler.ModelHandlers
         {
             HttpClient.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpClient.Authenticated = true;
-            HttpClient.UserRoles = roles;
+            HttpClient.UserRoles.AddRange(roles);
         }
     }
 }

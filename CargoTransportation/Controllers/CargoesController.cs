@@ -83,8 +83,8 @@ namespace CargoTransportation.Controllers
 
         private byte[] BuildImageBytes(IFormFile image)
         {
-            using (var binaryReader = new BinaryReader(image.OpenReadStream()))
-                return binaryReader.ReadBytes((int)image.Length);
+            using var binaryReader = new BinaryReader(image.OpenReadStream());
+            return binaryReader.ReadBytes((int)image.Length);
         }
 
         [HttpGet]
